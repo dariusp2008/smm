@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-783372d3-4d10-4276-b815-92c09cdeae6d/styles.css">
+<script src="_ds/classical-783372d3-4d10-4276-b815-92c09cdeae6d/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  html, body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); }
+  * { box-sizing: border-box; }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-800); border-bottom-color: var(--color-accent-600); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-neutral-300); border-radius: 999px; }
+</style>
+</helmet>
+
+<sc-if value="{{ showHome }}" hint-placeholder-val="{{ true }}">
+  <div style="background: var(--color-bg)">
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 26px; padding: 18px 42px; border-bottom: 1px solid var(--color-divider); position: sticky; top: 0; background: var(--color-bg); z-index: 5">
+      <div style="display: flex; align-items: baseline; gap: 10px">
+        <span style="font-family: var(--font-heading); font-weight: 600; font-size: 21px; letter-spacing: 0.06em">PopularNow</span>
+        <span style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-500)">.ro</span>
+      </div>
+      <nav style="display: flex; align-items: center; gap: 26px; font-size: 13.5px">
+        <a href="#servicii" style="border: none; color: var(--color-neutral-800)">Servicii</a>
+        <a href="#cum" style="border: none; color: var(--color-neutral-800)">Cum funcționează</a>
+        <a href="#intrebari" style="border: none; color: var(--color-neutral-800)">Întrebări</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button class="btn btn-ghost" onClick="{{ goSignin }}">Autentificare</button>
+        <button class="btn btn-primary" onClick="{{ goSignup }}">Creează cont</button>
+      </div>
+    </header>
+
+    <section style="display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 60px; align-items: center; padding: 74px 42px; max-width: 1280px; margin: 0 auto">
+      <div>
+        <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-accent-700)">Panou SMM · România</div>
+        <h1 style="font-family: var(--font-heading); font-weight: 400; font-size: 68px; line-height: 1.04; margin: 16px 0 0">Creștere pe rețelele sociale, la preț de furnizor.</h1>
+        <div style="width: 72px; height: 1px; background: var(--color-accent-600); margin: 30px 0"></div>
+        <p style="font-size: 16px; line-height: 1.8; text-align: justify; color: var(--color-neutral-800); max-width: 56ch; margin: 0">Followeri, aprecieri, vizualizări și abonați pentru Instagram, TikTok, YouTube, Facebook și Telegram. Comenzi automate, livrare pornită în mai puțin de o oră, plată în lei. Servicii preluate direct din panoul furnizorului, fără intermediari.</p>
+        <div style="display: flex; gap: 12px; margin-top: 34px">
+          <button class="btn btn-primary" onClick="{{ goSignup }}">Începe acum</button>
+          <button class="btn btn-secondary" onClick="{{ goDemo }}">Vezi panoul</button>
+        </div>
+      </div>
+      <div style="border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: 30px; background: var(--color-neutral-100)">
+        <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 18px">Cele mai comandate</div>
+        <div style="display: flex; flex-direction: column; gap: 0">
+          <sc-for list="{{ homeServices }}" as="s" hint-placeholder-count="5">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 18px; padding: 13px 0; border-bottom: 1px solid var(--color-divider)">
+              <div>
+                <div style="font-size: 14px">{{ s.name }}</div>
+                <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-neutral-600); margin-top: 3px">{{ s.category }}</div>
+              </div>
+              <div style="font-family: var(--font-heading); font-size: 19px; white-space: nowrap; font-variant-numeric: tabular-nums">{{ s.rateText }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size: 11.5px; color: var(--color-neutral-600); margin-top: 16px; font-variant-numeric: tabular-nums">Prețuri la 1.000 de unități, TVA inclus.</div>
+      </div>
+    </section>
+
+    <section style="border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider); background: var(--color-neutral-100)">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); max-width: 1280px; margin: 0 auto">
+        <sc-for list="{{ trustFigures }}" as="t" hint-placeholder-count="4">
+          <div style="padding: 30px 42px; border-left: 1px solid var(--color-divider)">
+            <div style="font-family: var(--font-heading); font-size: 34px; font-variant-numeric: tabular-nums">{{ t.value }}</div>
+            <div style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-600); margin-top: 4px">{{ t.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="cum" style="padding: 74px 42px; max-width: 1280px; margin: 0 auto">
+      <h2 style="font-family: var(--font-heading); font-weight: 400; font-size: 44px; margin: 0 0 8px">Cum funcționează</h2>
+      <div class="hr" style="margin: 26px 0 34px"></div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px">
+        <sc-for list="{{ steps }}" as="p" hint-placeholder-count="3">
+          <div>
+            <div style="font-family: var(--font-heading); font-size: 44px; color: var(--color-accent-300); font-variant-numeric: tabular-nums; line-height: 1">{{ p.n }}</div>
+            <h3 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; margin: 12px 0 8px">{{ p.title }}</h3>
+            <p style="font-size: 14px; line-height: 1.8; text-align: justify; color: var(--color-neutral-800); margin: 0">{{ p.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="servicii" style="padding: 0 42px 74px; max-width: 1280px; margin: 0 auto">
+      <h2 style="font-family: var(--font-heading); font-weight: 400; font-size: 44px; margin: 0">Lista de servicii</h2>
+      <p style="font-size: 14px; line-height: 1.8; color: var(--color-neutral-700); max-width: 66ch; text-align: justify; margin: 12px 0 26px">Lista completă se sincronizează automat cu panoul furnizorului. Prețurile de mai jos sunt cele afișate în contul tău după autentificare.</p>
+      <div style="overflow-x: auto">
+        <table class="table" style="min-width: 760px">
+          <thead>
+            <tr><th>ID</th><th>Serviciu</th><th>Categorie</th><th style="text-align: right">Preț / 1k</th><th style="text-align: right">Min</th><th style="text-align: right">Max</th><th>Garanție</th></tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+              <tr>
+                <td style="font-variant-numeric: tabular-nums">{{ s.service }}</td>
+                <td>{{ s.name }}</td>
+                <td style="color: var(--color-neutral-700)">{{ s.category }}</td>
+                <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.rate }}</td>
+                <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.min }}</td>
+                <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.max }}</td>
+                <td>{{ s.refillText }}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="intrebari" style="border-top: 1px solid var(--color-divider); padding: 74px 42px">
+      <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 60px">
+        <h2 style="font-family: var(--font-heading); font-weight: 400; font-size: 44px; margin: 0">Întrebări frecvente</h2>
+        <div style="display: flex; flex-direction: column; gap: 0">
+          <sc-for list="{{ faq }}" as="q" hint-placeholder-count="4">
+            <div style="padding: 20px 0; border-bottom: 1px solid var(--color-divider)">
+              <div style="font-family: var(--font-heading); font-weight: 600; font-size: 20px; margin-bottom: 7px">{{ q.q }}</div>
+              <p style="font-size: 14px; line-height: 1.8; text-align: justify; color: var(--color-neutral-800); margin: 0">{{ q.a }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="background: var(--color-neutral-900); color: var(--color-neutral-200); padding: 74px 42px">
+      <div style="max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap">
+        <div style="max-width: 44ch">
+          <div style="font-family: var(--font-heading); font-weight: 400; font-size: 44px; color: var(--color-neutral-100); line-height: 1.1">Primul depozit pornește de la 20 de lei.</div>
+          <p style="font-size: 14px; line-height: 1.8; color: var(--color-neutral-400); margin: 16px 0 0; text-align: justify">Fără abonament și fără comisioane ascunse. Plătești doar comenzile pe care le trimiți.</p>
+        </div>
+        <button class="btn" style="border: 1px solid var(--color-accent-400); color: var(--color-accent-300); background: transparent" onClick="{{ goSignup }}">Creează cont gratuit</button>
+      </div>
+    </section>
+
+    <footer style="padding: 26px 42px; border-top: 1px solid var(--color-divider)">
+      <div style="max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 12px; color: var(--color-neutral-600); flex-wrap: wrap">
+        <div style="font-variant-numeric: tabular-nums">© 2026 PopularNow · popularnow.ro</div>
+        <div style="display: flex; gap: 22px">
+          <a href="#intrebari" style="border: none; color: var(--color-neutral-700)">Termeni și condiții</a>
+          <a href="#intrebari" style="border: none; color: var(--color-neutral-700)">Tichete de suport</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height: 100vh; display: grid; grid-template-columns: 1.1fr 1fr; background: var(--color-bg)">
+    <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 46px; background: var(--color-neutral-900); color: var(--color-neutral-200)">
+      <button style="background: transparent; border: none; cursor: pointer; padding: 0; text-align: left; font-family: var(--font-heading); font-weight: 600; font-size: 19px; letter-spacing: 0.06em; color: var(--color-accent-300)" onClick="{{ goHome }}">PopularNow</button>
+      <div style="max-width: 30ch">
+        <div style="font-family: var(--font-heading); font-weight: 400; font-size: 60px; line-height: 1.04; color: var(--color-neutral-100)">Comenzile tale, într-un singur cont.</div>
+        <div style="width: 64px; height: 1px; background: var(--color-accent-600); margin: 28px 0"></div>
+        <p style="font-size: 15px; line-height: 1.75; text-align: justify; color: var(--color-neutral-400); margin: 0">Sold în lei, servicii sincronizate din panoul furnizorului și istoric complet al comenzilor trimise.</p>
+      </div>
+      <div style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-600)">Securizat prin Supabase</div>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: center; padding: 46px">
+      <div style="width: 100%; max-width: 384px">
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent-700)">{{ authKicker }}</div>
+        <h1 style="font-family: var(--font-heading); font-weight: 400; font-size: 42px; margin: 10px 0 22px; line-height: 1.1">{{ authTitle }}</h1>
+
+        <sc-if value="{{ keysMissing }}" hint-placeholder-val="{{ false }}">
+          <div style="border: 1px solid var(--color-accent-300); background: var(--color-accent-100); border-radius: var(--radius-md); padding: 13px 15px; margin-bottom: 22px; font-size: 13px; line-height: 1.6">
+            Cheile Supabase sunt încă valori de rezervă. Completează <span style="font-family: var(--font-heading); letter-spacing: 0.04em">SUPABASE_URL</span> și <span style="font-family: var(--font-heading); letter-spacing: 0.04em">SUPABASE_ANON_KEY</span> în fișierul de logică, sau continuă în mod demonstrativ.
+          </div>
+        </sc-if>
+
+        <div class="field" style="margin-bottom: 14px">
+          <label for="sb-email">Email</label>
+          <input class="input" id="sb-email" type="email" placeholder="nume@exemplu.ro" value="{{ email }}" onChange="{{ onEmail }}">
+        </div>
+        <div class="field" style="margin-bottom: 20px">
+          <label for="sb-pass">Parolă</label>
+          <input class="input" id="sb-pass" type="password" placeholder="••••••••" value="{{ password }}" onChange="{{ onPassword }}">
+        </div>
+
+        <sc-if value="{{ authMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size: 13px; line-height: 1.6; color: var(--color-accent-800); border-left: 2px solid var(--color-accent-600); padding-left: 11px; margin-bottom: 18px">{{ authMsg }}</div>
+        </sc-if>
+
+        <button class="btn btn-primary btn-block" onClick="{{ onSubmitAuth }}">{{ authCta }}</button>
+
+        <div style="display: flex; gap: 10px; margin-top: 12px">
+          <button class="btn btn-ghost" style="flex: 1" onClick="{{ onToggleMode }}">{{ authSwitch }}</button>
+          <button class="btn btn-secondary" style="flex: 1" onClick="{{ goDemo }}">Vezi panoul →</button>
+        </div>
+
+        <div class="hr" style="margin: 26px 0"></div>
+        <button style="background: transparent; border: none; padding: 0; cursor: pointer; font-family: var(--font-body); font-size: 13px; color: var(--color-neutral-700)" onClick="{{ goHome }}">← Înapoi la pagina principală</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showApp }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height: 100vh; display: flex; background: var(--color-bg)">
+    <aside style="{{ asideStyle }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 16px 18px; border-bottom: 1px solid var(--color-divider)">
+        <div style="{{ brandStyle }}">PopularNow</div>
+        <button class="btn btn-icon" title="Restrânge meniul" onClick="{{ onToggleNav }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 12h18M3 19h18"></path></svg>
+        </button>
+      </div>
+
+      <nav style="padding: 14px 10px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto">
+        <sc-for list="{{ navGroups }}" as="group" hint-placeholder-count="3">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <div style="{{ group.labelStyle }}">{{ group.label }}</div>
+            <sc-for list="{{ group.items }}" as="item" hint-placeholder-count="4">
+              <button style="{{ item.style }}" title="{{ item.label }}" onClick="{{ item.onClick }}">
+                <span style="{{ item.monoStyle }}">{{ item.mono }}</span>
+                <span style="{{ item.textStyle }}">{{ item.label }}</span>
+                <sc-if value="{{ item.badge }}" hint-placeholder-val="{{ false }}">
+                  <span style="{{ item.badgeStyle }}">{{ item.badge }}</span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
+      </nav>
+
+      <div style="margin-top: auto; padding: 16px; border-top: 1px solid var(--color-divider)">
+        <button class="btn btn-ghost btn-block" onClick="{{ onSignOut }}">{{ signOutLabel }}</button>
+      </div>
+    </aside>
+
+    <main style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+      <header style="display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 16px 30px; border-bottom: 1px solid var(--color-divider); background: var(--color-neutral-100)">
+        <div>
+          <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-neutral-600)">{{ crumb }}</div>
+          <h1 style="font-family: var(--font-heading); font-weight: 600; font-size: 25px; margin: 3px 0 0">{{ pageTitle }}</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 22px">
+          <div style="text-align: right">
+            <div style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-600)">Sold</div>
+            <div style="font-family: var(--font-heading); font-size: 22px; font-variant-numeric: tabular-nums">{{ balanceText }}</div>
+          </div>
+          <button class="btn btn-primary" onClick="{{ goFunds }}">Adaugă fonduri</button>
+          <div style="display: flex; align-items: center; gap: 10px; padding-left: 20px; border-left: 1px solid var(--color-divider)">
+            <div style="width: 34px; height: 34px; border: 1px solid var(--color-accent-400); border-radius: 999px; display: grid; place-items: center; font-family: var(--font-heading); font-size: 15px; color: var(--color-accent-700)">{{ userInitial }}</div>
+            <div style="font-size: 12px; line-height: 1.4; max-width: 20ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ userEmail }}</div>
+          </div>
+        </div>
+      </header>
+
+      <div style="flex: 1; padding: 30px; overflow-y: auto">
+        <sc-if value="{{ syncNotice }}" hint-placeholder-val="{{ false }}">
+          <div style="border: 1px solid var(--color-divider); border-left: 2px solid var(--color-accent-500); border-radius: var(--radius-md); padding: 11px 15px; margin-bottom: 22px; font-size: 12.5px; color: var(--color-neutral-700)">{{ syncNotice }}</div>
+        </sc-if>
+
+        <sc-if value="{{ isNew }}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 26px; align-items: start; max-width: 1180px">
+            <div class="card">
+              <div class="card-kicker">Trimite o comandă</div>
+              <div class="card-title" style="margin-bottom: 20px">Comandă nouă</div>
+
+              <div class="field" style="margin-bottom: 15px">
+                <label for="cat">Categorie</label>
+                <select class="input" id="cat" value="{{ category }}" onChange="{{ onCategory }}">
+                  <sc-for list="{{ categories }}" as="c" hint-placeholder-count="4">
+                    <option value="{{ c }}">{{ c }}</option>
+                  </sc-for>
+                </select>
+              </div>
+
+              <div class="field" style="margin-bottom: 15px">
+                <label for="svc">Serviciu</label>
+                <select class="input" id="svc" value="{{ serviceId }}" onChange="{{ onService }}">
+                  <sc-for list="{{ serviceOptions }}" as="s" hint-placeholder-count="4">
+                    <option value="{{ s.value }}">{{ s.label }}</option>
+                  </sc-for>
+                </select>
+              </div>
+
+              <div class="field" style="margin-bottom: 15px">
+                <label for="lnk">Link</label>
+                <input class="input" id="lnk" placeholder="https://instagram.com/p/…" value="{{ link }}" onChange="{{ onLink }}">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px">
+                <div class="field">
+                  <label for="qty">Cantitate</label>
+                  <input class="input" id="qty" type="number" value="{{ quantity }}" onChange="{{ onQuantity }}">
+                  <div style="font-size: 11px; color: var(--color-neutral-600); margin-top: 6px; font-variant-numeric: tabular-nums">{{ limitsText }}</div>
+                </div>
+                <div class="field">
+                  <label for="chg">Cost</label>
+                  <input class="input" id="chg" readonly value="{{ chargeText }}" style="font-family: var(--font-heading); font-size: 19px; font-variant-numeric: tabular-nums">
+                  <div style="font-size: 11px; color: var(--color-neutral-600); margin-top: 6px; font-variant-numeric: tabular-nums">{{ rateText }}</div>
+                </div>
+              </div>
+
+              <sc-if value="{{ orderMsg }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 13px; line-height: 1.6; border-left: 2px solid var(--color-accent-600); padding-left: 11px; margin-bottom: 16px; color: var(--color-accent-800)">{{ orderMsg }}</div>
+              </sc-if>
+
+              <button class="btn btn-primary btn-block" onClick="{{ onSubmitOrder }}">{{ submitLabel }}</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 22px">
+              <div class="card">
+                <div class="card-kicker">Serviciul selectat</div>
+                <div class="card-title" style="margin-bottom: 14px">{{ serviceName }}</div>
+                <p class="card-body" style="text-align: justify; margin: 0 0 16px">{{ serviceDescription }}</p>
+                <div class="hr" style="margin: 0 0 14px"></div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px 18px; font-variant-numeric: tabular-nums">
+                  <sc-for list="{{ serviceFacts }}" as="f" hint-placeholder-count="4">
+                    <div>
+                      <div style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-600)">{{ f.label }}</div>
+                      <div style="font-family: var(--font-heading); font-size: 17px; margin-top: 2px">{{ f.value }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-kicker">Contul tău</div>
+                <div style="display: flex; flex-direction: column; gap: 11px; margin-top: 12px; font-variant-numeric: tabular-nums">
+                  <sc-for list="{{ stats }}" as="st" hint-placeholder-count="3">
+                    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--color-divider); padding-bottom: 9px">
+                      <span style="font-size: 13px; color: var(--color-neutral-700)">{{ st.label }}</span>
+                      <span style="font-family: var(--font-heading); font-size: 20px">{{ st.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width: 1180px">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; flex-wrap: wrap">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                <sc-for list="{{ statusFilters }}" as="f" hint-placeholder-count="5">
+                  <button style="{{ f.style }}" onClick="{{ f.onClick }}">{{ f.label }}</button>
+                </sc-for>
+              </div>
+              <button class="btn btn-secondary" onClick="{{ onRefreshStatuses }}">{{ refreshLabel }}</button>
+            </div>
+            <div style="overflow-x: auto">
+              <table class="table" style="min-width: 780px">
+                <thead>
+                  <tr><th>ID</th><th>Serviciu</th><th>Link</th><th style="text-align: right">Cantitate</th><th style="text-align: right">Cost</th><th>Status</th><th>Dată</th></tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ visibleOrders }}" as="o" hint-placeholder-count="6">
+                    <tr>
+                      <td style="font-variant-numeric: tabular-nums">{{ o.id }}</td>
+                      <td style="max-width: 24ch">{{ o.service }}</td>
+                      <td style="max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-neutral-700)">{{ o.link }}</td>
+                      <td style="text-align: right; font-variant-numeric: tabular-nums">{{ o.quantityText }}</td>
+                      <td style="text-align: right; font-variant-numeric: tabular-nums">{{ o.chargeText }}</td>
+                      <td><span style="{{ o.statusStyle }}">{{ o.status }}</span></td>
+                      <td style="font-variant-numeric: tabular-nums; color: var(--color-neutral-700)">{{ o.date }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <sc-if value="{{ noOrders }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size: 14px; color: var(--color-neutral-600); margin-top: 24px">Nicio comandă cu acest status.</p>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isFunds }}" hint-placeholder-val="{{ false }}">
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 26px; align-items: start; max-width: 1120px">
+            <div class="card">
+              <div class="card-kicker">Depozit</div>
+              <div class="card-title" style="margin-bottom: 20px">Adaugă fonduri</div>
+              <div class="field" style="margin-bottom: 14px">
+                <label for="amt">Sumă (lei)</label>
+                <input class="input" id="amt" type="number" value="{{ fundAmount }}" onChange="{{ onFundAmount }}" style="font-family: var(--font-heading); font-size: 20px; font-variant-numeric: tabular-nums">
+              </div>
+              <div style="display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap">
+                <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
+                  <button class="btn btn-secondary" style="font-variant-numeric: tabular-nums" onClick="{{ p.onClick }}">{{ p.label }}</button>
+                </sc-for>
+              </div>
+              <div style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 10px">Metodă de plată</div>
+              <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px">
+                <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+                  <label style="{{ m.style }}" onClick="{{ m.onClick }}">
+                    <span style="{{ m.dotStyle }}"></span>
+                    <span style="flex: 1">{{ m.label }}</span>
+                    <span style="font-size: 11px; color: var(--color-neutral-600); font-variant-numeric: tabular-nums">{{ m.fee }}</span>
+                  </label>
+                </sc-for>
+              </div>
+              <sc-if value="{{ fundMsg }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size: 13px; line-height: 1.6; border-left: 2px solid var(--color-accent-600); padding-left: 11px; margin-bottom: 16px; color: var(--color-accent-800)">{{ fundMsg }}</div>
+              </sc-if>
+              <button class="btn btn-primary btn-block" onClick="{{ onAddFunds }}">{{ payLabel }}</button>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 12px">Istoric plăți</div>
+              <div style="overflow-x: auto">
+                <table class="table" style="min-width: 520px">
+                  <thead>
+                    <tr><th>ID</th><th>Metodă</th><th style="text-align: right">Sumă</th><th>Status</th><th>Dată</th></tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ payments }}" as="p" hint-placeholder-count="5">
+                      <tr>
+                        <td style="font-variant-numeric: tabular-nums">{{ p.id }}</td>
+                        <td>{{ p.method }}</td>
+                        <td style="text-align: right; font-variant-numeric: tabular-nums">{{ p.amountText }}</td>
+                        <td><span style="{{ p.statusStyle }}">{{ p.status }}</span></td>
+                        <td style="font-variant-numeric: tabular-nums; color: var(--color-neutral-700)">{{ p.date }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width: 1180px">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; margin-bottom: 22px; flex-wrap: wrap">
+              <p style="font-size: 13px; color: var(--color-neutral-700); max-width: 70ch; text-align: justify; margin: 0">{{ servicesNote }}</p>
+              <button class="btn btn-secondary" style="flex: 0 0 auto" onClick="{{ onSyncServices }}">{{ syncLabel }}</button>
+            </div>
+            <div style="overflow-x: auto">
+              <table class="table" style="min-width: 820px">
+                <thead>
+                  <tr><th>ID</th><th>Serviciu</th><th>Categorie</th><th style="text-align: right">Preț / 1k</th><th style="text-align: right">Min</th><th style="text-align: right">Max</th><th>Garanție</th></tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+                    <tr>
+                      <td style="font-variant-numeric: tabular-nums">{{ s.service }}</td>
+                      <td>{{ s.name }}</td>
+                      <td style="color: var(--color-neutral-700)">{{ s.category }}</td>
+                      <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.rate }}</td>
+                      <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.min }}</td>
+                      <td style="text-align: right; font-variant-numeric: tabular-nums">{{ s.max }}</td>
+                      <td>{{ s.refillText }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStub }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width: 620px; border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: 40px">
+            <div style="font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent-700)">În construcție</div>
+            <h2 style="font-family: var(--font-heading); font-weight: 400; font-size: 34px; margin: 10px 0 14px">{{ pageTitle }}</h2>
+            <p style="font-size: 14px; line-height: 1.8; text-align: justify; color: var(--color-neutral-700); margin: 0 0 24px">{{ stubCopy }}</p>
+            <button class="btn btn-secondary" onClick="{{ goNew }}">Înapoi la comandă nouă</button>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  /* ── Supabase: înlocuiește cele două valori cu ale proiectului tău ── */
+  SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+  SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
+  /* Schema, politicile RLS și funcția edge pentru prm4u: supabase.md    */
+
+  state = {
+    screen: "home", session: null, demo: false, ready: false, live: false, syncNotice: "",
+    mode: "signin", email: "", password: "", authMsg: "", busy: false,
+    view: "new", collapsed: false,
+    balance: 412.5,
+    category: "Instagram", serviceId: 1, link: "", quantity: 1000, orderMsg: "",
+    statusFilter: "Toate",
+    fundAmount: 200, method: "card", fundMsg: "",
+    orders: [
+      { id: 104822, service: "Instagram Followeri — reali, garanție 30 zile", link: "instagram.com/exemplu", quantity: 2500, charge: 11.25, status: "Finalizată", date: "2026-08-24" },
+      { id: 104817, service: "TikTok Vizualizări — rapide", link: "tiktok.com/@exemplu/video/73…", quantity: 20000, charge: 6.4, status: "Finalizată", date: "2026-08-23" },
+      { id: 104811, service: "YouTube Aprecieri — HR", link: "youtu.be/9aKz1Qd", quantity: 500, charge: 8.5, status: "În lucru", date: "2026-08-22" },
+      { id: 104795, service: "Instagram Aprecieri — instant", link: "instagram.com/p/C8sT1x", quantity: 1500, charge: 3.15, status: "Parțială", date: "2026-08-20" },
+      { id: 104780, service: "Telegram Membri — mixt", link: "t.me/exemplu", quantity: 1000, charge: 14.0, status: "În așteptare", date: "2026-08-19" },
+      { id: 104764, service: "Instagram Followeri — reali, garanție 30 zile", link: "instagram.com/exemplu", quantity: 1000, charge: 4.5, status: "Anulată", date: "2026-08-17" }
+    ],
+    payments: [
+      { id: 9931, method: "Card (Stripe)", amount: 250, status: "Finalizată", date: "2026-08-21" },
+      { id: 9910, method: "Transfer bancar", amount: 500, status: "Finalizată", date: "2026-08-11" },
+      { id: 9884, method: "Cripto (USDT)", amount: 120, status: "Finalizată", date: "2026-07-29" },
+      { id: 9860, method: "Card (Stripe)", amount: 100, status: "Rambursată", date: "2026-07-14" }
+    ],
+    /* forma identică răspunsului prm4u: action=services */
+    services: [
+      { service: 1, name: "Instagram Followeri — reali, garanție 30 zile", type: "Default", category: "Instagram", rate: "4.50", min: "50", max: "100000", refill: true },
+      { service: 2, name: "Instagram Aprecieri — instant", type: "Default", category: "Instagram", rate: "2.10", min: "100", max: "50000", refill: false },
+      { service: 3, name: "Instagram Vizualizări story", type: "Default", category: "Instagram", rate: "1.20", min: "100", max: "20000", refill: false },
+      { service: 11, name: "TikTok Vizualizări — rapide", type: "Default", category: "TikTok", rate: "0.32", min: "1000", max: "1000000", refill: false },
+      { service: 12, name: "TikTok Followeri — calitate ridicată", type: "Default", category: "TikTok", rate: "9.80", min: "100", max: "50000", refill: true },
+      { service: 21, name: "YouTube Vizualizări — sugerate", type: "Default", category: "YouTube", rate: "7.40", min: "500", max: "500000", refill: false },
+      { service: 22, name: "YouTube Aprecieri — HR", type: "Default", category: "YouTube", rate: "17.00", min: "50", max: "20000", refill: true },
+      { service: 31, name: "Telegram Membri — mixt", type: "Default", category: "Telegram", rate: "14.00", min: "100", max: "40000", refill: false },
+      { service: 41, name: "Facebook Aprecieri pagină", type: "Default", category: "Facebook", rate: "11.50", min: "100", max: "30000", refill: true }
+    ]
+  };
+
+  nav = [
+    { label: "Comenzi", items: [
+      { id: "updates", label: "Noutăți" },
+      { id: "new", label: "Comandă nouă" },
+      { id: "mass", label: "Comandă în masă" },
+      { id: "orders", label: "Comenzi" },
+      { id: "refunds", label: "Rambursări" },
+      { id: "services", label: "Servicii" }
+    ]},
+    { label: "Finanțe", items: [
+      { id: "funds", label: "Adaugă fonduri" },
+      { id: "affiliates", label: "Afiliați" },
+      { id: "discount", label: "Obține o reducere" }
+    ]},
+    { label: "Suport & info", items: [
+      { id: "tickets", label: "Tichete", badge: "4" },
+      { id: "terms", label: "Termeni" }
+    ]}
+  ];
+
+  titles = {
+    updates: ["Comenzi", "Noutăți"], new: ["Comenzi", "Comandă nouă"], mass: ["Comenzi", "Comandă în masă"],
+    orders: ["Comenzi", "Comenzi"], refunds: ["Comenzi", "Rambursări"], services: ["Comenzi", "Servicii"],
+    funds: ["Finanțe", "Adaugă fonduri"], affiliates: ["Finanțe", "Afiliați"], discount: ["Finanțe", "Obține o reducere"],
+    tickets: ["Suport & info", "Tichete"], terms: ["Suport & info", "Termeni"]
+  };
+
+  stubs = {
+    updates: "Anunțuri despre servicii noi, modificări de preț și mentenanță la furnizor, afișate cronologic.",
+    mass: "O comandă pe linie — ID serviciu, link, cantitate — validate și calculate înainte de trimitere.",
+    refunds: "Rambursări parțiale și totale pentru comenzile finalizate, cu perioada de garanție afișată per serviciu.",
+    affiliates: "Link de recomandare, comision, numărul de clicuri și conversii, plus cererile de plată.",
+    discount: "Praguri de volum care reduc automat prețul după ce cheltuiala lunară trece un anumit nivel.",
+    tickets: "Patru tichete deschise, cu răspunsuri pe fir și comenzile atașate.",
+    terms: "Termenii serviciului, politica de rambursare și regulile de utilizare."
+  };
+
+  statusMap = {
+    pending: "În așteptare", inprogress: "În lucru", "in progress": "În lucru", processing: "În lucru",
+    completed: "Finalizată", partial: "Parțială", canceled: "Anulată", cancelled: "Anulată", refunded: "Rambursată"
+  };
+
+  keysMissing() {
+    return this.SUPABASE_URL.includes("YOUR_PROJECT_ID") || this.SUPABASE_ANON_KEY.includes("YOUR_PUBLIC");
+  }
+
+  componentDidMount() {
+    if (this.keysMissing() || !window.supabase) { this.setState({ ready: true }); return; }
+    this.client = window.supabase.createClient(this.SUPABASE_URL, this.SUPABASE_ANON_KEY);
+    this.client.auth.getSession().then(({ data }) => {
+      this.setState({ session: data.session, ready: true, screen: data.session ? "app" : "home" });
+      if (data.session) this.loadAll();
+    });
+    this.sub = this.client.auth.onAuthStateChange((_e, session) => {
+      this.setState({ session, screen: session ? "app" : "home" });
+      if (session) this.loadAll();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.sub && this.sub.data) this.sub.data.subscription.unsubscribe();
+  }
+
+  /* ── Citiri Supabase ───────────────────────────────────────────────── */
+  async loadAll() {
+    if (!this.client || !this.state.session) return;
+    const uid = this.state.session.user.id;
+    const [profile, orders, payments, services] = await Promise.all([
+      this.client.from("profiles").select("balance").eq("id", uid).maybeSingle(),
+      this.client.from("orders").select("*").eq("user_id", uid).order("created_at", { ascending: false }).limit(200),
+      this.client.from("payments").select("*").eq("user_id", uid).order("created_at", { ascending: false }).limit(100),
+      this.client.from("services").select("*").eq("active", true).order("service")
+    ]);
+    const errors = [profile, orders, payments, services].filter(r => r && r.error);
+    if (errors.length) {
+      this.setState({ live: false, syncNotice: "Datele afișate sunt demonstrative — tabelele Supabase nu au răspuns (" + errors[0].error.message + ")." });
+      return;
+    }
+    const next = { live: true, syncNotice: "" };
+    if (profile.data) next.balance = Number(profile.data.balance);
+    if (orders.data) next.orders = orders.data.map(o => ({
+      id: o.id, service: o.service_name, link: o.link, quantity: Number(o.quantity),
+      charge: Number(o.charge), status: this.roStatus(o.status), date: String(o.created_at).slice(0, 10)
+    }));
+    if (payments.data) next.payments = payments.data.map(p => ({
+      id: p.id, method: p.method, amount: Number(p.amount), status: this.roStatus(p.status), date: String(p.created_at).slice(0, 10)
+    }));
+    if (services.data && services.data.length) {
+      next.services = services.data.map(s => ({
+        service: s.service, name: s.name, type: s.type || "Default", category: s.category,
+        rate: Number(s.rate).toFixed(2), min: String(s.min), max: String(s.max), refill: !!s.refill
+      }));
+      next.category = next.services[0].category;
+      next.serviceId = next.services[0].service;
+    }
+    this.setState(next);
+  }
+
+  /* Sincronizare catalog din prm4u prin funcția edge (cheia stă pe server) */
+  syncServices = async () => {
+    if (!this.client) { this.setState({ syncNotice: "Completează cheile Supabase pentru a sincroniza catalogul." }); return; }
+    this.setState({ busy: true, syncNotice: "Se sincronizează serviciile din prm4u…" });
+    const { data, error } = await this.client.functions.invoke("sync-services", { body: {} });
+    const err = (error && error.message) || (data && data.error);
+    this.setState({ busy: false, syncNotice: err ? "Sincronizarea a eșuat: " + err : (data.synced + " servicii sincronizate din prm4u.") });
+    if (!err) this.loadAll();
+  };
+
+  refreshStatuses = async () => {
+    if (!this.client) { this.setState({ syncNotice: "Completează cheile Supabase pentru a actualiza statusurile." }); return; }
+    this.setState({ busy: true, syncNotice: "Se verifică statusurile la furnizor…" });
+    const { data, error } = await this.client.functions.invoke("sync-statuses", { body: {} });
+    const err = (error && error.message) || (data && data.error);
+    this.setState({ busy: false, syncNotice: err ? "Actualizarea a eșuat: " + err : (data.updated + " comenzi actualizate, " + data.refunded + " rambursări.") });
+    if (!err) this.loadAll();
+  };
+
+  roStatus(s) {
+    if (!s) return "În așteptare";
+    const key = String(s).toLowerCase().replace(/_/g, " ");
+    return this.statusMap[key] || s;
+  }
+
+  /* ── Autentificare ─────────────────────────────────────────────────── */
+  submitAuth = async () => {
+    const { email, password, mode } = this.state;
+    if (!email || !password) { this.setState({ authMsg: "Introdu emailul și parola." }); return; }
+    if (!this.client) { this.setState({ authMsg: "Clientul Supabase lipsește — completează cheile sau folosește modul demonstrativ." }); return; }
+    this.setState({ authMsg: "Se procesează…" });
+    const fn = mode === "signin" ? "signInWithPassword" : "signUp";
+    const { error } = await this.client.auth[fn]({ email, password });
+    this.setState({ authMsg: error ? error.message : (mode === "signup" ? "Verifică emailul pentru confirmarea contului." : "") });
+  };
+
+  signOut = async () => {
+    if (this.client) await this.client.auth.signOut();
+    this.setState({ session: null, demo: false, screen: "home", authMsg: "", password: "", live: false, syncNotice: "" });
+  };
+
+  money = (n) => new Intl.NumberFormat("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + " lei";
+  num = (n) => new Intl.NumberFormat("ro-RO").format(n);
+
+  selected() {
+    return this.state.services.find(s => s.service === Number(this.state.serviceId)) || this.state.services[0];
+  }
+
+  /* ── Scrieri: comandă & depozit ────────────────────────────────────── */
+  submitOrder = async () => {
+    const s = this.selected();
+    const qty = Number(this.state.quantity) || 0;
+    if (!this.state.link) { this.setState({ orderMsg: "Linkul este obligatoriu." }); return; }
+    if (qty < Number(s.min) || qty > Number(s.max)) { this.setState({ orderMsg: "Cantitatea este în afara limitelor serviciului." }); return; }
+    const charge = qty / 1000 * Number(s.rate);
+    if (charge > this.state.balance) { this.setState({ orderMsg: "Sold insuficient — adaugă fonduri." }); return; }
+
+    if (this.state.live && this.client) {
+      this.setState({ busy: true, orderMsg: "Se trimite comanda la furnizor…" });
+      const { data, error } = await this.client.functions.invoke("place-order", {
+        body: { service: s.service, link: this.state.link, quantity: qty }
+      });
+      this.setState({ busy: false });
+      const err = (error && error.message) || (data && data.error);
+      if (err) { this.setState({ orderMsg: "Comanda a fost respinsă: " + err }); return; }
+      this.setState({ link: "", orderMsg: "Comanda #" + data.order_id + " a fost trimisă (ID furnizor " + data.provider_order_id + ")." });
+      this.loadAll();
+      return;
+    }
+
+    const id = this.state.orders.length ? this.state.orders[0].id + 1 : 100001;
+    this.setState(st => ({
+      orders: [{ id, service: s.name, link: st.link, quantity: qty, charge, status: "În așteptare", date: new Date().toISOString().slice(0, 10) }, ...st.orders],
+      balance: st.balance - charge, link: "", orderMsg: "Comanda " + id + " a fost plasată pentru " + this.money(charge) + "."
+    }));
+  };
+
+  addFunds = async () => {
+    const amt = Number(this.state.fundAmount) || 0;
+    if (amt < 20) { this.setState({ fundMsg: "Depozitul minim este de 20 de lei." }); return; }
+    const label = { card: "Card (Stripe)", bank: "Transfer bancar", crypto: "Cripto (USDT)" }[this.state.method];
+
+    if (this.state.live && this.client) {
+      this.setState({ busy: true, fundMsg: "Se creează plata…" });
+      const { data, error } = await this.client.rpc("create_payment", { p_amount: amt, p_method: this.state.method });
+      this.setState({ busy: false });
+      if (error) { this.setState({ fundMsg: "Plata nu a putut fi creată: " + error.message }); return; }
+      if (data && data.checkout_url) { window.open(data.checkout_url, "_blank"); }
+      this.setState({ fundMsg: "Plată inițiată prin " + label + "." });
+      this.loadAll();
+      return;
+    }
+
+    const id = this.state.payments.length ? this.state.payments[0].id + 1 : 9001;
+    this.setState(st => ({
+      payments: [{ id, method: label, amount: amt, status: "Finalizată", date: new Date().toISOString().slice(0, 10) }, ...st.payments],
+      balance: st.balance + amt, fundMsg: this.money(amt) + " adăugați prin " + label + "."
+    }));
+  };
+
+  statusStyle(status) {
+    const map = {
+      "Finalizată": ["--color-accent-700", "--color-accent-200"],
+      "În lucru": ["--color-accent-800", "--color-accent-300"],
+      "În așteptare": ["--color-neutral-700", "--color-neutral-300"],
+      "Parțială": ["--color-accent-800", "--color-accent-200"],
+      "Anulată": ["--color-neutral-600", "--color-neutral-300"],
+      "Rambursată": ["--color-neutral-600", "--color-neutral-300"]
+    };
+    const [fg, bd] = map[status] || map["În așteptare"];
+    return "display: inline-block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; white-space: nowrap; color: var(" + fg + "); border: 1px solid var(" + bd + ")";
+  }
+
+  navItemStyle(active, collapsed) {
+    return "display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: " +
+      (active ? "var(--color-accent-100)" : "transparent") + "; border: none; border-left: 2px solid " +
+      (active ? "var(--color-accent)" : "transparent") + "; border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: " +
+      (collapsed ? "9px 8px" : "9px 12px") + "; cursor: pointer; font-family: var(--font-body); font-size: 13.5px; color: " +
+      (active ? "var(--color-accent-800)" : "var(--color-neutral-800)") + "; justify-content: " + (collapsed ? "center" : "flex-start");
+  }
+
+  renderVals() {
+    const st = this.state;
+    const authed = !!st.session || st.demo;
+    const s = this.selected();
+    const qty = Number(st.quantity) || 0;
+    const charge = qty / 1000 * Number(s.rate);
+    const categories = [...new Set(st.services.map(x => x.category))];
+    const [crumb, pageTitle] = this.titles[st.view] || ["", ""];
+    const built = ["new", "orders", "funds", "services"];
+    const statuses = ["Toate", "În așteptare", "În lucru", "Finalizată", "Parțială", "Anulată"];
+    const visibleOrders = st.orders.filter(o => st.statusFilter === "Toate" || o.status === st.statusFilter);
+    const email = st.session ? st.session.user.email : "demo@popularnow.ro";
+    const servicesMapped = st.services.map(x => ({ ...x, refillText: x.refill ? "30 zile" : "—", rateText: x.rate + " lei" }));
+
+    return {
+      showHome: st.screen === "home" && !authed,
+      showLogin: st.screen === "auth" && !authed,
+      showApp: authed,
+      goHome: () => this.setState({ screen: "home", authMsg: "" }),
+      goSignin: () => this.setState({ screen: "auth", mode: "signin", authMsg: "" }),
+      goSignup: () => this.setState({ screen: "auth", mode: "signup", authMsg: "" }),
+      goDemo: () => this.setState({ demo: true, screen: "app" }),
+
+      homeServices: servicesMapped.filter(x => ["1", "11", "12", "21", "31"].includes(String(x.service))).slice(0, 5),
+      trustFigures: [
+        { value: "38.400", label: "comenzi livrate" },
+        { value: "180+", label: "servicii active" },
+        { value: "< 1 h", label: "timp mediu de start" },
+        { value: "20 lei", label: "depozit minim" }
+      ],
+      steps: [
+        { n: "01", title: "Creează contul", body: "Email și parolă, fără date de card. Contul este activ imediat după confirmare." },
+        { n: "02", title: "Adaugă fonduri", body: "Card, transfer bancar sau cripto. Soldul apare în lei și se actualizează instant." },
+        { n: "03", title: "Trimite comanda", body: "Alegi serviciul, lipești linkul, setezi cantitatea. Costul se calculează înainte de confirmare." }
+      ],
+      faq: [
+        { q: "Cât durează livrarea?", a: "Majoritatea serviciilor pornesc în mai puțin de o oră. Viteza medie și limitele sunt afișate pentru fiecare serviciu în lista de prețuri." },
+        { q: "Am nevoie de parola contului meu?", a: "Nu. Trimiți doar linkul public al profilului sau al postării. Nu cerem niciodată parole." },
+        { q: "Ce se întâmplă dacă o comandă nu se livrează integral?", a: "Comanda trece în status parțial și diferența se întoarce automat în sold. Serviciile cu garanție pot fi completate 30 de zile." },
+        { q: "Pot factura serviciile pe firmă?", a: "Da, factura se emite pe datele companiei din setările contului, în lei, cu TVA." }
+      ],
+
+      keysMissing: this.keysMissing(),
+      authKicker: st.mode === "signin" ? "Cont" : "Înregistrare",
+      authTitle: st.mode === "signin" ? "Autentificare" : "Creează un cont",
+      authCta: st.mode === "signin" ? "Intră în cont" : "Creează contul",
+      authSwitch: st.mode === "signin" ? "Înregistrare" : "Am deja cont",
+      authMsg: st.authMsg,
+      email: st.email, password: st.password,
+      onEmail: e => this.setState({ email: e.target.value }),
+      onPassword: e => this.setState({ password: e.target.value }),
+      onToggleMode: () => this.setState({ mode: st.mode === "signin" ? "signup" : "signin", authMsg: "" }),
+      onSubmitAuth: this.submitAuth,
+      onSignOut: this.signOut,
+      signOutLabel: st.collapsed ? "Ieși" : "Deconectare",
+      syncNotice: st.syncNotice || (st.demo ? "Mod demonstrativ: datele nu sunt salvate. Autentifică-te pentru soldul și comenzile reale." : ""),
+      onSyncServices: this.syncServices,
+      onRefreshStatuses: this.refreshStatuses,
+      syncLabel: st.busy ? "Se sincronizează…" : "Sincronizează din prm4u",
+      refreshLabel: st.busy ? "Se verifică…" : "Actualizează statusurile",
+      servicesNote: st.live
+        ? "Sincronizate automat din panoul furnizorului prm4u (action=services). Prețurile sunt la 1.000 de unități, în lei."
+        : "Listă demonstrativă în formatul răspunsului prm4u (action=services). Prețurile sunt la 1.000 de unități, în lei.",
+
+      asideStyle: "width: " + (st.collapsed ? "72px" : "236px") + "; flex: 0 0 auto; display: flex; flex-direction: column; background: var(--color-neutral-100); border-right: 1px solid var(--color-divider); transition: width .18s ease",
+      brandStyle: "font-family: var(--font-heading); font-weight: 600; font-size: 17px; letter-spacing: 0.05em; color: var(--color-accent-700); white-space: nowrap; display: " + (st.collapsed ? "none" : "block"),
+      onToggleNav: () => this.setState({ collapsed: !st.collapsed }),
+      navGroups: this.nav.map(g => ({
+        label: g.label,
+        labelStyle: "font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-neutral-500); padding: 0 12px 6px; display: " + (st.collapsed ? "none" : "block"),
+        items: g.items.map(it => ({
+          label: it.label, badge: it.badge, mono: it.label[0],
+          style: this.navItemStyle(st.view === it.id, st.collapsed),
+          monoStyle: "font-family: var(--font-heading); font-size: 13px; width: 20px; text-align: center; color: var(--color-accent-600); display: " + (st.collapsed ? "block" : "none"),
+          textStyle: "flex: 1; display: " + (st.collapsed ? "none" : "block"),
+          badgeStyle: "font-size: 10.5px; font-variant-numeric: tabular-nums; border: 1px solid var(--color-accent-400); color: var(--color-accent-700); border-radius: 999px; padding: 0 6px; display: " + (st.collapsed ? "none" : "inline-block"),
+          onClick: () => this.setState({ view: it.id })
+        }))
+      })),
+
+      crumb, pageTitle,
+      balanceText: this.money(st.balance),
+      userEmail: email,
+      userInitial: email[0].toUpperCase(),
+      goFunds: () => this.setState({ view: "funds" }),
+      goNew: () => this.setState({ view: "new" }),
+
+      isNew: st.view === "new",
+      isOrders: st.view === "orders",
+      isFunds: st.view === "funds",
+      isServices: st.view === "services",
+      isStub: !built.includes(st.view),
+      stubCopy: this.stubs[st.view] || "",
+
+      categories,
+      category: st.category,
+      onCategory: e => {
+        const cat = e.target.value;
+        const first = st.services.find(x => x.category === cat);
+        this.setState({ category: cat, serviceId: first.service, quantity: Number(first.min), orderMsg: "" });
+      },
+      serviceOptions: st.services.filter(x => x.category === st.category).map(x => ({ value: x.service, label: x.service + " — " + x.name + " — " + x.rate + " lei/1k" })),
+      serviceId: st.serviceId,
+      onService: e => this.setState({ serviceId: Number(e.target.value), orderMsg: "" }),
+      link: st.link,
+      onLink: e => this.setState({ link: e.target.value }),
+      quantity: st.quantity,
+      onQuantity: e => this.setState({ quantity: e.target.value, orderMsg: "" }),
+      limitsText: "Min " + this.num(Number(s.min)) + " · Max " + this.num(Number(s.max)),
+      rateText: s.rate + " lei la 1.000",
+      chargeText: this.money(charge),
+      serviceName: s.name,
+      serviceDescription: "Pornire în 0–1 h, viteză medie 5.000–10.000 pe zi. Anularea este posibilă cât timp comanda este în așteptare; " + (s.refill ? "garanția de completare este de 30 de zile." : "acest serviciu nu are garanție de completare."),
+      serviceFacts: [
+        { label: "ID serviciu", value: s.service },
+        { label: "Preț / 1k", value: s.rate },
+        { label: "Garanție", value: s.refill ? "30 zile" : "Fără" },
+        { label: "Categorie", value: s.category }
+      ],
+      stats: [
+        { label: "Comenzi trimise", value: this.num(st.orders.length) },
+        { label: "Total cheltuit", value: this.money(st.orders.reduce((a, o) => a + o.charge, 0)) },
+        { label: "Total depus", value: this.money(st.payments.reduce((a, p) => a + p.amount, 0)) }
+      ],
+      orderMsg: st.orderMsg,
+      submitLabel: st.busy ? "Se trimite…" : "Trimite comanda",
+      onSubmitOrder: this.submitOrder,
+
+      statusFilters: statuses.map(f => ({
+        label: f,
+        onClick: () => this.setState({ statusFilter: f }),
+        style: "font-family: var(--font-body); font-size: 12px; cursor: pointer; padding: 5px 12px; border-radius: 999px; background: " +
+          (st.statusFilter === f ? "var(--color-accent-100)" : "transparent") + "; border: 1px solid " +
+          (st.statusFilter === f ? "var(--color-accent-400)" : "var(--color-divider)") + "; color: " +
+          (st.statusFilter === f ? "var(--color-accent-800)" : "var(--color-neutral-700)")
+      })),
+      visibleOrders: visibleOrders.map(o => ({ ...o, quantityText: this.num(o.quantity), chargeText: this.money(o.charge), statusStyle: this.statusStyle(o.status) })),
+      noOrders: visibleOrders.length === 0,
+
+      fundAmount: st.fundAmount,
+      onFundAmount: e => this.setState({ fundAmount: e.target.value, fundMsg: "" }),
+      presets: [50, 100, 200, 500, 1000].map(v => ({ label: this.num(v) + " lei", onClick: () => this.setState({ fundAmount: v, fundMsg: "" }) })),
+      methods: [
+        { id: "card", label: "Card — Stripe", fee: "2,9% + 1 leu" },
+        { id: "bank", label: "Transfer bancar", fee: "fără comision" },
+        { id: "crypto", label: "Cripto — USDT", fee: "1%" }
+      ].map(m => ({
+        label: m.label, fee: m.fee,
+        onClick: () => this.setState({ method: m.id, fundMsg: "" }),
+        style: "display: flex; align-items: center; gap: 11px; cursor: pointer; padding: 11px 14px; border-radius: var(--radius-md); font-size: 13.5px; background: " +
+          (st.method === m.id ? "var(--color-accent-100)" : "transparent") + "; border: 1px solid " +
+          (st.method === m.id ? "var(--color-accent-400)" : "var(--color-divider)"),
+        dotStyle: "width: 11px; height: 11px; border-radius: 999px; flex: 0 0 auto; border: 1px solid " +
+          (st.method === m.id ? "var(--color-accent-600)" : "var(--color-neutral-400)") + "; background: " +
+          (st.method === m.id ? "var(--color-accent)" : "transparent")
+      })),
+      payLabel: st.busy ? "Se procesează…" : "Plătește " + this.money(Number(st.fundAmount) || 0),
+      fundMsg: st.fundMsg,
+      payments: st.payments.map(p => ({ ...p, amountText: this.money(p.amount), statusStyle: this.statusStyle(p.status) })),
+
+      services: servicesMapped
+    };
+  }
+}
+
+</script>
+</body>
+</html>
